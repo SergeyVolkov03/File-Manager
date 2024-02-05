@@ -9,13 +9,13 @@ function App() {
   console.log(`Welcome to the File Manager, ${getUserName()}!`);
   getWorkDirectory();
 
-  process.stdin.on("data", (data) => {
+  process.stdin.on("data", async (data) => {
     const commandline = data.toString().trim().split(" ");
     const command = commandline[0];
     const args = [...commandline.slice(1)];
 
     if (command in commands) {
-      commands[command](args);
+      await commands[command](args);
       getWorkDirectory();
     }
   });

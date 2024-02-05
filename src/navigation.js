@@ -1,3 +1,5 @@
+import fs from "fs/promises";
+
 export const getWorkDirectory = () => {
   process.stdout.write(
     `You are currently in ${process.cwd()}, enter your command >`
@@ -21,5 +23,31 @@ export function cd(args) {
     }
   } catch (e) {
     console.log(e.message);
+  }
+}
+
+export async function ls(args) {
+  if (args.length === 0) {
+    try {
+      const elements = await fs.readdir(process.cwd(), {
+        withFileTypes: true,
+        encoding: "utf8",
+      });
+      const files = [];
+      const folders = [];
+      elements.map((el) => {
+        if (el.isFile()) {
+          files.push({ name: el.name, type: "file" });
+        } else {
+          folders.push({ name: el.name, type: "folder" });
+        }
+      });
+      const sortElements = [...folders.sort(), ...files.sort()];
+      console.table(sortElements);
+    } catch (e) {
+      console.log(e.message);
+    }
+  } else {
+    console.log(`command 'ls' dont have arguments`);
   }
 }
