@@ -10,15 +10,12 @@ function App() {
   getWorkDirectory();
 
   process.stdin.on("data", (data) => {
-    const command = data.toString().trim();
-    if (command === ".exit") {
-      console.log(
-        `Thank you for using File Manager, ${getUserName()}, goodbye!`
-      );
-      process.exit();
-    }
+    const commandline = data.toString().trim().split(" ");
+    const command = commandline[0];
+    const args = [...commandline.slice(1)];
+
     if (command in commands) {
-      commands[command]();
+      commands[command](args);
       getWorkDirectory();
     }
   });
