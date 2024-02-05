@@ -17,6 +17,9 @@ function App() {
     if (command in commands) {
       await commands[command](args);
       getWorkDirectory();
+    } else {
+      console.log("File manager doesn`t have such a command");
+      getWorkDirectory();
     }
   });
 
