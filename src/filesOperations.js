@@ -1,6 +1,6 @@
 import fs from "fs";
 import { pipeline } from "stream/promises";
-import { writeFile } from "fs/promises";
+import { writeFile, rename } from "fs/promises";
 import path from "path";
 
 export const cat = async (args) => {
@@ -31,6 +31,33 @@ export const add = async (args) => {
     try {
       await writeFile(filePath, "");
       console.log("file exists");
+    } catch (e) {
+      console.log(e.message);
+    }
+  }
+};
+
+export const rn = async (args) => {
+  if (args.length === 0 || args.length > 2) {
+    console.log(
+      `command 'rename' must have two arguments(filename and new_filename)`
+    );
+  } else {
+    const filePath = path.join(process.cwd(), args[0]);
+    const copyFilePath = path.join(process.cwd(), args[1]);
+    const existsFile = fs.existsSync(filePath);
+    const existsCopyFile = fs.existsSync(copyFilePath);
+    if (!existsFile) {
+      console.log("such a file doesn`t exist");
+      return;
+    }
+    if (existsCopyFile) {
+      console.log("copy file has already existed");
+      return;
+    }
+    try {
+      await rename(filePath, copyFilePath);
+      console.log("file renamed");
     } catch (e) {
       console.log(e.message);
     }

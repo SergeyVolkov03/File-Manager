@@ -1,5 +1,5 @@
 import { exit } from "./exit.js";
-import { add, cat } from "./filesOperations.js";
+import { add, cat, rn } from "./filesOperations.js";
 import { cd, ls, up } from "./navigation.js";
 
 export const commands = {
@@ -9,4 +9,5 @@ export const commands = {
   ls: ls,
   cat: cat,
   add: add,
+  rn: rn,
 };
