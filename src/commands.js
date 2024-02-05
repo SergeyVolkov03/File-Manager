@@ -3,6 +3,7 @@ import { add, cat, cp, mv, rm, rn } from "./filesOperations.js";
 import { hash } from "./hash.js";
 import { cd, ls, up } from "./navigation.js";
 import { os } from "./os.js";
+import { compress, decompress } from "./zlib.js";
 
 export const commands = {
   ".exit": exit,
@@ -17,4 +18,6 @@ export const commands = {
   mv: mv,
   os: os,
   hash: hash,
+  compress: compress,
+  decompress: decompress,
 };
