@@ -1,6 +1,6 @@
 import fs from "fs";
 import { pipeline } from "stream/promises";
-import { writeFile, rename } from "fs/promises";
+import { writeFile, rename, unlink } from "fs/promises";
 import path from "path";
 
 export const cat = async (args) => {
@@ -30,7 +30,6 @@ export const add = async (args) => {
     }
     try {
       await writeFile(filePath, "");
-      console.log("file exists");
     } catch (e) {
       console.log(e.message);
     }
@@ -57,7 +56,6 @@ export const rn = async (args) => {
     }
     try {
       await rename(filePath, copyFilePath);
-      console.log("file renamed");
     } catch (e) {
       console.log(e.message);
     }
@@ -85,9 +83,33 @@ export const cp = async (args) => {
       const readStream = fs.createReadStream(filePath, "utf8");
       const writeStream = fs.createWriteStream(directoryPath, "utf8");
       await pipeline(readStream, writeStream);
-      console.log("file copied");
     } catch (e) {
       console.log(e.message);
     }
+  }
+};
+
+export const rm = async (args) => {
+  if (args.length === 0 || args.length > 1) {
+    console.log(`command 'rm' must have one argument(path_to_file)`);
+  } else {
+    const filePath = path.resolve(process.cwd(), args[0]);
+    try {
+      await unlink(filePath);
+    } catch (e) {
+      console.log(e.message);
+    }
+  }
+};
+
+export const mv = async (args) => {
+  if (args.length === 0 || args.length > 2) {
+    console.log(
+      `command 'mv' must have two arguments(path_to_file path_to_new_directory)`
+    );
+  } else {
+    const filePath = [path.resolve(process.cwd(), args[0])];
+    await cp(args);
+    await rm(filePath);
   }
 };
