@@ -1,8 +1,11 @@
 import process from "process";
+import { homedir } from "os";
 import { getUserName } from "./userName.js";
 import { getWorkDirectory } from "./navigation.js";
+import { commands } from "./commands.js";
 
 function App() {
+  process.chdir(homedir());
   console.log(`Welcome to the File Manager, ${getUserName()}!`);
   getWorkDirectory();
 
@@ -13,6 +16,10 @@ function App() {
         `Thank you for using File Manager, ${getUserName()}, goodbye!`
       );
       process.exit();
+    }
+    if (command in commands) {
+      commands[command]();
+      getWorkDirectory();
     }
   });
 
