@@ -11,3 +11,15 @@ export function up(args) {
     console.log(`command 'up' dont have arguments`);
   }
 }
+
+export function cd(args) {
+  try {
+    if (args.length === 0 || args.length > 1) {
+      console.log(`command 'cd' must have one argument(path)`);
+    } else {
+      process.chdir(...args);
+    }
+  } catch (e) {
+    console.log(e.message);
+  }
+}
